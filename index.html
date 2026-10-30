@@ -14,6 +14,7 @@
     object-fit: cover;
     /* 左右反転（鏡）＋ほんの少しズームして広角の歪みを弱め、縦をわずかに縮めて顔の縦伸び感を補正 */
     transform: scale(-1.08, 1.04);
+    filter: brightness(0.88) saturate(0.88) contrast(0.97);
     transition: filter .6s ease;
   }
   #msg {
@@ -63,9 +64,10 @@ function startAutoBrightness(video) {
       }
       const lum = sum / n; // 0〜255
       let target = 1;
-      if (lum > 115) target = Math.min(1, Math.max(0.7, 118 / lum));
+      if (lum > 100) target = Math.min(1, Math.max(0.55, 100 / lum));
       current += (target - current) * 0.5;
-      video.style.filter = 'brightness(' + current.toFixed(3) + ')';
+      // 本物の鏡は少し暗く、色もあっさり見えるので、彩度とコントラストも少し落とす
+      video.style.filter = 'brightness(' + current.toFixed(3) + ') saturate(0.88) contrast(0.97)';
     } catch (_) { /* 測れない環境では何もしない */ }
   }, 800);
 }
